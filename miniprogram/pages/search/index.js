@@ -191,6 +191,7 @@ Page({
             }else{
               item.shape = '瘦身'
             }
+            item.probability = String(item.probability) + '%'
           });
           wx.hideLoading();
           // 更新页面数据

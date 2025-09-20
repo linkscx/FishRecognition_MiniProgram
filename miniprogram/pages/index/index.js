@@ -199,10 +199,10 @@ Page({
   create_excel:function(){
     let _this = this
     const data = {
-      _image_path:_this.data._image_path,
+      _image_path:String(_this.data._image_path),
       _image_name:_this.data._image_name,
       shape: _this.data.shape,
-      probability: _this.data.probability,
+      probability: String(_this.data.probability) + '%',
     };
     // 显示加载提示
     wx.showLoading({
@@ -378,7 +378,7 @@ Page({
     const app = getApp()
     wx.request({
       // url: 'http://218.199.68.156:8001/pattern', // 替换为您的本地服务器地址和端口
-      url: 'http://7a001e27.r21.vip.cpolar.cn/pattern',
+      url: 'http://7ddf01a0.r32.cpolar.top/pattern',
       method: 'POST',
       data: {
         img_path: data._image_path,
