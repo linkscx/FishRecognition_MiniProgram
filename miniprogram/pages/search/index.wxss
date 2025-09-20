@@ -34,7 +34,7 @@ page {
   font-weight: 500;
 }
 .search__row{
-  width: 100%;
+  width: 105%;
   height: 70rpx;
   padding: 18rpx 0rpx 18rpx 24rpx;
   box-sizing: border-box;

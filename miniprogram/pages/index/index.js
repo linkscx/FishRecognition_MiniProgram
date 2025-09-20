@@ -368,7 +368,7 @@ Page({
     return tm
   },
   // 获取服务器url
-  getURL:function(){
+  getUrl:function(){
     const db = wx.cloud.database();
     const app = getApp();
   
@@ -554,6 +554,7 @@ Page({
     })
   },
   getTempFileURL(fileID,index) {//会调用n次 但是request只能调用一次
+    const app = getApp()
     let that = this;
     wx.cloud.getTempFileURL({
       fileList: [fileID], // 文件ID数组
@@ -568,9 +569,19 @@ Page({
           console.log(`_image_path[${index + 1}]图片下载地址`,that.data._image_path[index]);
           that.data.okCount = that.data.okCount + 1;
           if(that.data.okCount ==  that.data.imgNum){
-            this.getURL();
-            console.log("true");
-            this.request();
+            this.getUrl();
+            const checkServerUrl = () => {
+              if (app.globalData.serverUrl) {
+                  // 服务器地址已准备好，调用request()
+                  console.log("true");
+                  this.request();
+              } else {
+                  // 未准备好，等待100毫秒后再次检查
+                  setTimeout(checkServerUrl, 300);
+              }
+            };
+            // 开始检查
+            checkServerUrl();
             
             // /* 假数据 测试用 */
             // that.setData({

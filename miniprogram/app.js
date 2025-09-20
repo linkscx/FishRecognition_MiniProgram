@@ -18,8 +18,7 @@ App({
         }).get({
           success: result => {
             this.globalData.nickName = result.data[0].nickName,
-            this.globalData.avatarUrl = result.data[0].avatarUrl,
-            this.globalData.user_openid = result.data[0]._openid
+            this.globalData.avatarUrl = result.data[0].avatarUrl
           }
         })
         //console.log("成功调用getOpenId了")
