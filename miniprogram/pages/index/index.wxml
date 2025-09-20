@@ -1,0 +1,42 @@
+<!--index.wxml-->
+<view class="container">
+  <swiper class="swiper" 
+    autoplay="false" 
+    interval="3000" 
+    circular="true" 
+    indicator-dots="true" 
+    bindchange="onSwiperChange">
+    <swiper-item wx:for="{{imgList}}" wx:key="index">
+      <view class="upload">
+        <image mode="widthFix" src="{{item}}" bindtap="actionSheetTap"></image>
+      </view>
+    </swiper-item>
+  </swiper>
+  <view class="data">
+      <form bindsubmit="formSubmit">
+          <view class="top-title">预测信息</view>
+          <view class="form-content">
+            <view class="form-item">
+                <text class="left shape">预测体型</text>
+                <view class="shape-box">
+                    <radio-group name="shape" bindchange="changeShape">
+                        <radio disabled="{{disabled_data}}" class="radio-item" class="item1" value="0" checked="{{normal}}" color="#DBB975">正常</radio>
+                        <radio disabled="{{disabled_data}}" class="radio-item" class="item2" value="1" checked="{{abnormal}}" color="#DBB975">瘦身</radio>
+                    </radio-group>
+                </view>
+            </view>
+            <view class="form-item">
+                <view class="left">概率</view>
+                <input disabled="{{disabled_data}}" class="right-input" placeholder="预测概率" value="{{probability}}" name="probability" bindinput="inputChange" type="digit"/>
+            </view>
+          </view>
+        <view class="bottom">
+            <button disabled="{{disabled_data}}"  class="save-btn" hover-class="hover-class-1" formType="submit">保存结果</button>
+            <view class="fill"></view>
+            <button disabled="{{disabled_data}}" class="export-btn" hover-class="hover-class-1" 
+            bindtap="exportButton">导出数据</button>
+        </view>
+      </form>
+  </view>
+</view>
+

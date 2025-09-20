@@ -1,0 +1,24 @@
+.setting-container {
+  padding: 20px;
+  font-size: 18px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.label {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.radio-label {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.radio-label text {
+  margin-left: 5px;
+}

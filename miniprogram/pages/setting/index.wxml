@@ -1,0 +1,15 @@
+<view class="setting-container">
+  <view class="setting-item">
+    <text class="label">自动保存数据：</text>
+    <radio-group name="AutoSave" bindchange="onAutoSaveChange">
+      <label class="radio-label">
+        <radio value="on" checked="{{isAutoSave_on}}"  disabled="{{disabled_AutoSave}}"/>
+        <text>开启</text>
+      </label>
+      <label class="radio-label">
+        <radio value="off" checked="{{isAutoSave_off}}"  disabled="{{disabled_AutoSave}}"/>
+        <text>关闭</text>
+      </label>
+    </radio-group>
+  </view>
+</view>

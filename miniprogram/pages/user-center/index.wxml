@@ -1,0 +1,54 @@
+<!--pages/login/index.wxml-->
+<block wx:if="{{isLogin}}">
+  <!-- 登录区域 -->
+  <view class="login-container">
+    <image src="/images/contact-filled.png" class="contact-filled" mode="widthFix"></image>
+    <button class="btn-login" bindtap="goLogin">一键登录</button>
+    <text class="tip-text">登录后尽享更多功能</text>
+  </view>
+</block>
+<block wx:else>
+  <!-- 头像昵称区域 -->
+  <view class="top-box">
+    <image src="{{avatarUrl}}" class="avatar"></image>
+    <view class="nickname">{{nickName}}</view>
+  </view>
+  <!-- 面板区域 -->
+  <view class="panel">
+    <view class="panel-list-item">
+      <text>意见反馈</text>
+      <image src="/images/arrow.png"></image>
+    </view>
+    <view class="panel-list-item" bindtap="setting">
+      <text>设置</text>
+      <image src="/images/arrow.png"></image>
+    </view>
+    <view class="panel-list-item" bindtap="logout">
+      <text>退出登录</text>
+      <image src="/images/arrow.png"></image>
+    </view>
+  </view>
+</block>
+
+<!-- <view class="root" wx:if="{{isLogin}}">
+    <image class="touxiang"  src="{{avatarUrl}}"></image>
+    <view class="name">{{nickName}}</view>
+    <button bind:tap="tuichu">退出登录</button> 
+</view>
+<button wx:else bind:tap="goLogin">去登陆</button> -->
+<!--  弹窗登录-->
+<view class="pop_root" hidden="{{isHidden}}">
+  <view class="pop_content">
+    <view class="pop_tip">授权登录弹窗</view>
+    <button class="pop_avatar" open-type="chooseAvatar" bindchooseavatar="getAvatar">
+      <image class="pop_img" wx:if="{{avatarUrl}}" src="{{avatarUrl}}"/>
+      <view wx:else>获取头像</view>
+    </button>
+    <input class="pop_name" type="nickname" bindblur="getName" placeholder="获取名称"/>
+    <view class="pop_bot">
+      <view class="btn" bind:tap="popNo">取消</view>
+      <view class="btn log_btn" bind:tap="popYes">确定</view>
+    </view>
+  </view>
+</view>
+

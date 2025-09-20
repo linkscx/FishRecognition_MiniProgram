@@ -1,0 +1,213 @@
+page {
+  background-color: #f8f8f8;
+}
+ 
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+ 
+.container {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+ 
+.head__search {
+  width: 100%;
+  padding: 30rpx 30rpx;
+  background-color: #f8f8f8;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+.text{
+  width: 40%;
+}
+.number_text{
+  width: 28%;
+  font-size: 24rpx;
+  font-family: PingFang;
+  font-weight: 500;
+}
+.search__row{
+  width: 100%;
+  height: 70rpx;
+  padding: 18rpx 0rpx 18rpx 24rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1rpx solid #E4E4E4;
+  border-width: thin;
+}
+
+.search__row .shape{
+  width: 70%;
+}
+ 
+.search__input {
+  width: 25%;
+  margin-left: 20rpx;
+  font-size: 26rpx;
+  font-family: PingFang;
+  font-weight: 500;
+}
+.search__number {
+  width: 15%;
+  margin-left: 20rpx;
+  font-size: 26rpx;
+  font-family: PingFang;
+  font-weight: 500;
+}
+.icon{
+  margin-left: 20rpx;
+}
+
+/* .custom-picker{
+  width: 50%;
+  font-size: 30rpx;
+  font-family: PingFang;
+  font-weight: 500;
+} */
+.radio-item{
+  margin-right: 30rpx;
+}
+
+.picker{
+  width: 50%;
+  font-family: PingFang;
+  font-weight: 500;
+}
+
+.head___btn {
+  width: 100%;
+  height: 90rpx;
+  display: flex;
+  position: fixed;
+  top: 250rpx;
+  z-index: 999;
+}
+.btn_export{
+  width: 30%;
+  padding: 0rpx 25rpx;
+}
+.btn_inquire{
+  width: 30%;
+  padding: 0rpx 25rpx;
+}
+.btn_delete{
+  width: 30%;
+  padding: 0rpx 25rpx;
+} 
+.table__box {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  position:absolute; 
+  top: 350rpx; 
+  z-index: 999;
+  border: 1px solid #E4E4E4;
+  /* background-color: blueviolet; */
+}
+ 
+.table__scroll {
+  overflow: hidden;
+  background: #FFF;
+}
+ 
+.table__header {
+  width: 700rpx;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: grid;  /* display: grid; 网格布局 */
+  /* grid-auto-flow 属性控制自动放置的项目如何插入网格中 */
+  /* column	通过填充每一列来放置项目 */
+  grid-auto-flow: column;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+  background: #F4F6FF;
+}
+ 
+.table__header__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  background: #F4F6FF;
+  width: 120rpx;
+  height: 60rpx;
+  position: relative;
+  z-index: 888;
+  border: 1rpx solid #E4E4E4;
+  border-left: 0;
+  border-top: 0;
+}
+ 
+.table__header__item{
+  width: 170rpx;
+  position: sticky;
+  left: 0;
+  z-index: 999;
+}
+/* .table__header__item:last-child {
+  width: 1000rpx;
+} */
+.table__header__item:nth-last-child(-n+1) {
+  width: 250rpx;
+}
+ 
+.table__content {
+  background-color: #fff;
+  /* 这是兼容 iPhone x */
+  /* padding-bottom: 10rpx; */
+  /* margin-bottom: constant(safe-area-inset-bottom); */
+  /* margin-bottom: env(safe-area-inset-bottom); */
+}
+ 
+.table__content__line {
+  width: 4610rpx;
+  display: grid;
+  grid-auto-flow: column;
+  position: relative;
+  
+}
+ 
+.table__content__line__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: #fff;
+  width: 120rpx;
+  height: 80rpx;
+  border: 1rpx solid #E4E4E4;
+  border-left: 0;
+  border-top: 0;
+  font-size: 26rpx;
+  
+}
+ 
+.table__content__line__item:nth-child(1) {
+  width: 170rpx;
+  position: sticky;
+  left: 0;
+  
+}
+/* .table__content__line__item:last-child {
+  width: 1000rpx;
+  right: 0; 
+} */
+.table__content__line__item:nth-last-child(-n+3)  {
+  width: 1000rpx;
+}
+.table__content__line__item:last-child {
+  right: 0; /* 只为最后一个元素设置 right: 0 */
+}
