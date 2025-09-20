@@ -24,7 +24,7 @@ Page({
     headList: [
       { title: '存储日期' },
       { title: '预测体型' },
-      { title: '概率' },
+      { title: '置信度' },
       { title: '图片链接' },
     ],
     patternList:[],

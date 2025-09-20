@@ -63,7 +63,7 @@ Page({
     const errorMessages = [];
     // 检查每个值,并收集错误信息
     if(formData.probability < 0 || formData.probability > 100){
-      errorMessages.push('概率不在0到100的范围内');
+      errorMessages.push('置信度不在0到100的范围内');
     }
     // 如果有错误信息，循环显示所有的错误信息
     // 如果有错误信息，显示模态对话框
@@ -105,7 +105,7 @@ Page({
     // 处理表单提交逻辑...  将表单的数据 传入到数据库内  数据库保存成功则返回提示信息
     const db = wx.cloud.database().collection('patternInfo');
     //存入数据库  之前要记得先把input标签获取的string数据转成int数据 再存入数据库
-    //预测体型 概率
+    //预测体型 置信度
     const shape = parseInt(this.data.shape, 10);
     const probability = parseFloat(this.data.probability, 10);
     this.setData({

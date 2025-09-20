@@ -26,8 +26,8 @@
                 </view>
             </view>
             <view class="form-item">
-                <view class="left">概率</view>
-                <input disabled="{{disabled_data}}" class="right-input" placeholder="预测概率" value="{{probability}}" name="probability" bindinput="inputChange" type="digit"/>
+                <view class="left">置信度</view>
+                <input disabled="{{disabled_data}}" class="right-input" placeholder="预测置信度" value="{{probability}}" name="probability" bindinput="inputChange" type="digit"/>
                 <view class="ratio">%</view>
             </view>
           </view>

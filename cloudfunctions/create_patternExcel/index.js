@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 
     // 创建Excel文件的数据
     const data = [
-      ['图片下载链接', '处理时间', '预测体型', '概率'], // 表头
+      ['图片下载链接', '处理时间', '预测体型', '置信度'], // 表头
       ...items.map(item => [
         String(item._image_path),
         item._image_name,
