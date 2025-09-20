@@ -186,6 +186,11 @@ Page({
             if (item._id) {
               idArray.push(item._id); // 假设每个元素都有 _id 属性
             }
+            if (item.shape == 0){
+              item.shape = '正常'
+            }else{
+              item.shape = '瘦身'
+            }
           });
           wx.hideLoading();
           // 更新页面数据
