@@ -10,24 +10,12 @@ exports.main = async (event, context) => {
 
     // 创建Excel文件的数据
     const data = [
-      ['第一张图片下载链接','第二张图片下载链接','第三张图片下载链接','处理时间','体长', '体重', '性别', '头胸甲长', '头胸甲宽', '头胸甲高','螯足长', '螯足宽','腹节长','腹节宽','腹节高','抱卵量'], // 表头
+      ['图片下载链接', '处理时间', '预测体型', '概率'], // 表头
       ...items.map(item => [
-        item._image_path0,
-        item._image_path1,
-        item._image_path2,
+        String(item._image_path),
         item._image_name,
-        item.length,
-        item.weight,
-        item.gender, 
-        item.cuirassLength,
-        item.cuirassWidth,
-        item.cuirassHeight,
-        item.cheliceraeLength,
-        item.cheliceraeWidth,
-        item.bellyLength,
-        item.bellyWidth,
-        item.bellyHeight,
-        item.eggs
+        item.shape,
+        item.probability,
       ])
     ];
 

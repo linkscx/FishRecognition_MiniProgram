@@ -298,17 +298,19 @@ Page({
   changeShape:function(e){
     const shape = e.detail.value;
     // 根据选中的体型更新normal和abnormal的值
-    if (shape == '0') {
+    if (shape == 0) {
       // 如果选中的是“正常”
       this.setData({
         isSave:false,
-        shape:'正常',
+        normal:'checked',
+        abnormal:''
       });
     } else if (shape == '1') {
       // 如果选中的是“瘦身”，
       this.setData({
         isSave:false,
-        shape:'瘦身',
+        normal:'',
+        abnormal:'checked'
       });
     }
   },
@@ -373,11 +375,14 @@ Page({
       title: '正在请求服务器...',
     });
     const data = this.data;
+    const app = getApp()
     wx.request({
-      url: 'http://218.199.68.156:8001/pattern', // 替换为您的本地服务器地址和端口
+      // url: 'http://218.199.68.156:8001/pattern', // 替换为您的本地服务器地址和端口
+      url: 'http://7a001e27.r21.vip.cpolar.cn/pattern',
       method: 'POST',
       data: {
         img_path: data._image_path,
+        openid: app.globalData.user_openid
       },
       header: {
         'content-type': 'application/json' // 指定发送的数据类型
@@ -386,7 +391,7 @@ Page({
         if (res.statusCode === 200) {
           // 处理服务器返回的数据
           // console.log('服务器返回的数据:', res.data);
-          if(res.data.success === 'True'){
+          if(res.data.success === true){
             //以下这段代码  写到 接受数据的函数里 
             _this.setData({
               disabled_data: false,
@@ -435,7 +440,7 @@ Page({
             // if(app.globalData.isAutoSave){
             //   _this.submitDatabase();
             // }
-          }else if(res.data.success === 'False'){
+          }else if(res.data.success === False){
             wx.hideLoading();
             wx.showToast({
               title: '服务器图片下载失败，请重试',
@@ -489,7 +494,8 @@ Page({
         //重置图片id和图片path  防止上一次数据造成污染
         _this.setData({
           fileId:null,
-          _image_path:null
+          _image_path:null,
+          okCount : 0
         })
         // 遍历 tempFilePaths，逐个上传文件
         tempFilePaths.forEach((path, index) => {
@@ -509,7 +515,7 @@ Page({
         //   fileId:res.fileID
         // })
         _this.setData({
-          [`fileId[${index}]`]: res.fileID // 将每张图片的 fileID 保存到 data 中
+          [`fileId[${index}]`]: res.fileID, // 将每张图片的 fileID 保存到 data 中
         });
         console.log("上传成功",_this.data.fileId[index]);
         // 获取临时下载链接
@@ -538,38 +544,37 @@ Page({
             [`_image_path[${index}]`]: fileURL // 更新data中的图片下载地址
           });
           console.log(`_image_path[${index + 1}]图片下载地址`,that.data._image_path[index]);
-          //先注释 请求服务器函数
-          
-          if(that.data._image_path.length ===  that.data.imgNum){
+          that.data.okCount = that.data.okCount + 1;
+          if(that.data.okCount ==  that.data.imgNum){
             console.log("true");
             this.request();
             
-            /* 假数据 测试用 */
-            that.setData({
-              disabled_data: false,
-              //下面的 应该从后台拿到数据 赋值给前台
-              shape:0,
-              probability:95,
-              normal:null,
-              abnormal:null,
-            });      
-            if(that.data.shape === 0){
-              that.setData({
-                normal:'checked',
-                abnormal:'',
-              })
-            }else if(that.data.gender === 1){ 
-              that.setData({
-                normal:'',
-                abnormal:'checked',
-              })
-            }else{//如果app.globalData.isDefaultGender为null
-              that.setData({
-                normal:null,
-                abnormal:null,
-              })
-            }
-            /*            */
+            // /* 假数据 测试用 */
+            // that.setData({
+            //   disabled_data: false,
+            //   //下面的 应该从后台拿到数据 赋值给前台
+            //   shape:0,
+            //   probability:95,
+            //   normal:null,
+            //   abnormal:null,
+            // });      
+            // if(that.data.shape === 0){
+            //   that.setData({
+            //     normal:'checked',
+            //     abnormal:'',
+            //   })
+            // }else if(that.data.gender === 1){ 
+            //   that.setData({
+            //     normal:'',
+            //     abnormal:'checked',
+            //   })
+            // }else{//如果app.globalData.isDefaultGender为null
+            //   that.setData({
+            //     normal:null,
+            //     abnormal:null,
+            //   })
+            // }
+            // /*            */
 
           }
         } else {

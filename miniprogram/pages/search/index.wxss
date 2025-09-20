@@ -120,7 +120,7 @@ page {
 }
  
 .table__header {
-  width: 700rpx;
+  width: 100%;
   position: sticky;
   top: 0;
   z-index: 999;
@@ -151,16 +151,10 @@ page {
 }
  
 .table__header__item{
-  width: 170rpx;
+  width: 190rpx;
   position: sticky;
   left: 0;
   z-index: 999;
-}
-/* .table__header__item:last-child {
-  width: 1000rpx;
-} */
-.table__header__item:nth-last-child(-n+1) {
-  width: 250rpx;
 }
  
 .table__content {
@@ -172,7 +166,7 @@ page {
 }
  
 .table__content__line {
-  width: 4610rpx;
+  width: 100%;
   display: grid;
   grid-auto-flow: column;
   position: relative;
@@ -195,19 +189,8 @@ page {
   
 }
  
-.table__content__line__item:nth-child(1) {
-  width: 170rpx;
+.table__content__line__item{
+  width: 190rpx;
   position: sticky;
   left: 0;
-  
-}
-/* .table__content__line__item:last-child {
-  width: 1000rpx;
-  right: 0; 
-} */
-.table__content__line__item:nth-last-child(-n+3)  {
-  width: 1000rpx;
-}
-.table__content__line__item:last-child {
-  right: 0; /* 只为最后一个元素设置 right: 0 */
 }

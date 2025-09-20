@@ -512,4 +512,32 @@ Page({
       wx.showTabBar();
     }
   },
+
+  copyImagePath: function(e) {
+    // 通过e.currentTarget.dataset.index获取传递的索引
+    const index = e.currentTarget.dataset.index;
+    // 根据索引获取对应的item数据
+    const currentItem = this.data.patternList[index];
+    const imagePath = String(currentItem._image_path);
+    
+    // 执行复制操作
+    wx.setClipboardData({
+      data: imagePath,
+      success: function() {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000
+        });
+      },
+      fail: function() {
+        wx.showToast({
+          title: '复制失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+    });
+  }
 })
+

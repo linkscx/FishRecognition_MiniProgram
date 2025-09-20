@@ -55,7 +55,10 @@
             <view class="table__content__line__item">{{patternItem._image_name}}</view>
             <view class="table__content__line__item">{{patternItem.shape}}</view>
             <view class="table__content__line__item">{{patternItem.probability}}</view>
-            <view class="table__content__line__item final">{{patternItem._image_path}}</view>
+            <view class="table__content__line__item final">
+              <!-- 通过data-index传递当前索引 -->
+              <navigator bindtap="copyImagePath" data-index="{{index}}" hover-class="nav-hover">复制</navigator>
+            </view>
           </view>
         </view>
       </view>
