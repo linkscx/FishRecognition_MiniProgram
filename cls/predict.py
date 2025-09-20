@@ -4,6 +4,7 @@ from torchvision import models, transforms
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
 from pathlib import Path
+import math
 import glob
         
 class DirectFishInferDataset(Dataset):
@@ -72,10 +73,10 @@ def infer(model, open_id=None):
 
     avg_prob = torch.mean(torch.stack(probs), dim=0)
     pred = torch.argmax(avg_prob, dim=1).item()
-    probability = int(avg_prob[0][pred].item() * 100)
+    probability = avg_prob[0][pred].item() * 100
+    probability = math.floor(probability * 100) / 100
 
-    return pred, probability    
-            
+    return pred, probability
 
 if __name__ == "__main__":
     model = load_model()

@@ -107,6 +107,15 @@ page {
 .shape{
   margin-left: 5%;
 }
+.ratio{
+  
+  height: auto;
+  font-size: 30rpx;
+  line-height: 100rpx;
+  font-weight: 500;
+  color: rgba(170, 170, 170, 1);
+  text-align: left;
+}
 .radio-item:nth-child(2) {
   margin-left: 15%;
 }

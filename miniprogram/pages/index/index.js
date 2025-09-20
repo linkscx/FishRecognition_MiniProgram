@@ -107,7 +107,7 @@ Page({
     //存入数据库  之前要记得先把input标签获取的string数据转成int数据 再存入数据库
     //预测体型 概率
     const shape = parseInt(this.data.shape, 10);
-    const probability = parseInt(this.data.probability, 10);
+    const probability = parseFloat(this.data.probability, 10);
     this.setData({
       shape:shape,
       probability:probability,
