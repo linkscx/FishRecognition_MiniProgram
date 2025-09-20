@@ -21,7 +21,6 @@ App({
             this.globalData.avatarUrl = result.data[0].avatarUrl,
             this.globalData.user_openid = result.data[0]._openid
           }
-          
         })
         //console.log("成功调用getOpenId了")
         // console.log(res)
@@ -42,7 +41,8 @@ App({
     isDefaultGender:null,//默认性别
     isAutoSave:false,//是否自动保存
     //用户登录状态
-    isLogin:false
+    isLogin:false,
+    serverUrl:null //服务器url
   }
 })
 

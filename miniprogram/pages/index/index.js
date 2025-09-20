@@ -367,6 +367,28 @@ Page({
     var tm = year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + second;
     return tm
   },
+  // 获取服务器url
+  getURL:function(){
+    const db = wx.cloud.database();
+    const app = getApp();
+  
+    // 查询urlInfo表中的所有记录
+    db.collection('urlInfo').get({
+      success: res => {
+        // 检查是否有记录
+        if (res.data.length > 0) {
+          // 获取第0条记录的url字段
+          app.globalData.serverUrl = String(res.data[0].url);
+          console.log('获取到的服务器url:', app.globalData.serverUrl);
+        } else {
+          console.log('未找到关于服务器url的记录');
+        }
+      },
+      fail: err => {
+        console.error('查询服务器url失败:', err);
+      }
+    });
+  },
   // 封装的请求函数
   request: function() {
     let _this = this
@@ -374,11 +396,11 @@ Page({
     wx.showLoading({
       title: '正在请求服务器...',
     });
-    const data = this.data;
+    const data = _this.data;
     const app = getApp()
     wx.request({
-      // url: 'http://218.199.68.156:8001/pattern', // 替换为您的本地服务器地址和端口
-      url: 'http://7ddf01a0.r32.cpolar.top/pattern',
+      // url: '', // 替换为您的本地服务器地址和端口
+      url: app.globalData.serverUrl,
       method: 'POST',
       data: {
         img_path: data._image_path,
@@ -546,6 +568,7 @@ Page({
           console.log(`_image_path[${index + 1}]图片下载地址`,that.data._image_path[index]);
           that.data.okCount = that.data.okCount + 1;
           if(that.data.okCount ==  that.data.imgNum){
+            this.getURL();
             console.log("true");
             this.request();
             
