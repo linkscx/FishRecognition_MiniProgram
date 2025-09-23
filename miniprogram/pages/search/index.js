@@ -524,6 +524,9 @@ Page({
     const currentItem = this.data.patternList[index];
     const imageId = currentItem.fileId;
 
+    this.setData({//先清空
+      ['_img_path'] : null
+    });
     this.getTempFileURL(imageId);
     
     this.getImgPath().then(path => {

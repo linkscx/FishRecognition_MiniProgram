@@ -180,17 +180,11 @@ page {
   text-align: center;
   box-sizing: border-box;
   background-color: #fff;
-  width: 120rpx;
+  width: 190rpx;
   height: 80rpx;
   border: 1rpx solid #E4E4E4;
   border-left: 0;
   border-top: 0;
   font-size: 26rpx;
-  
-}
- 
-.table__content__line__item{
-  width: 190rpx;
   position: sticky;
-  left: 0;
 }
