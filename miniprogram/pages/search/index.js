@@ -25,7 +25,7 @@ Page({
       { title: '存储日期' },
       { title: '预测体型' },
       { title: '置信度' },
-      { title: '图片链接' },
+      { title: '图片' },
     ],
     patternList:[],
   },
@@ -86,7 +86,6 @@ Page({
         openid: app.globalData.user_openid, 
       },
       success: function(res) {
-        console.log(res.result.success)
         if (res.result.success) {
           _this.setData({
             countResult: res.result.total // 将返回的记录总数赋值给页面数据
@@ -118,7 +117,6 @@ Page({
   verifyData:function(){
     // 定义一个数组来存储所有的错误信息
     const errorMessages = [];
-    console.log('校验前的数据',this.data)
     if(this.data.number > this.data.countResult){
       errorMessages.push('查询个数已超出总记录数');
     }
@@ -151,7 +149,7 @@ Page({
         }
       });
     }else{
-      console.log(this.data)
+      // console.log(this.data)
       this.searchDatabase();
     }
   },
@@ -319,8 +317,8 @@ Page({
   },
   //根据查询拿到的fileId 和 _id删除数据库记录和云存储文件
   delete:function(){
-    console.log(this.data.fileId)
-    console.log(this.data._id)
+    // console.log(this.data.fileId)
+    // console.log(this.data._id)
     let _this = this
     if (this.data.fileId.length > 0 && this.data._id.length > 0 ) {
       wx.showModal({
@@ -518,32 +516,83 @@ Page({
       wx.showTabBar();
     }
   },
-
-  copyImagePath: function(e) {
+  // 弹窗打开图片
+  openImagePreview: function(e) {
     // 通过e.currentTarget.dataset.index获取传递的索引
     const index = e.currentTarget.dataset.index;
     // 根据索引获取对应的item数据
     const currentItem = this.data.patternList[index];
-    const imagePath = String(currentItem._image_path);
+    const imageId = currentItem.fileId;
+
+    this.getTempFileURL(imageId);
     
-    // 执行复制操作
-    wx.setClipboardData({
-      data: imagePath,
-      success: function() {
-        wx.showToast({
-          title: '复制成功',
-          icon: 'success',
-          duration: 2000
-        });
+    this.getImgPath().then(path => {
+      // 执行图片预览（弹窗打开图片）
+      wx.previewImage({
+        current: path,  // 当前显示图片的http链接
+        urls: path,   // 需要预览的图片http链接列表
+        success: function() {
+          console.log('图片预览成功');
+        },
+        fail: function() {
+          wx.showToast({
+            title: '打开图片失败',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      });
+    });
+  },
+  // 异步函数：等待this.data._avatar_path有值后返回
+  async waitForImgPath() {
+    // 返回一个Promise，等待_avatar_path不为空
+    return new Promise((resolve) => {
+      // 定义检查函数
+      const checkImgPath = () => {
+        if (this.data._img_path) {
+          // 当有值时，解析Promise返回结果
+          resolve(this.data._img_path);
+        } else {
+          // 无值时，100毫秒后再次检查
+          setTimeout(checkImgPath, 100);
+        }
+      };
+      // 立即开始第一次检查
+      checkImgPath();
+    });
+  },
+  //等待获取
+  async getImgPath() {
+    // 等待异步函数返回结果，赋值给ImgPath
+    const ImgPath = await this.waitForImgPath();
+    // 此时ImgPath已确保有值，可以进行后续操作
+    return ImgPath;
+  },
+  //获取上传到云存储的图片下载链接, 这个链接是临时的
+  getTempFileURL(fileID) {
+    let that = this;
+    wx.cloud.getTempFileURL({
+      fileList: fileID, // 文件ID数组
+      success: res => {
+        if (res.fileList.length > 0) {
+          // 获取文件的临时下载链接
+          const fileURL = res.fileList.map(file => file.tempFileURL);
+          // 这里可以将文件下载链接返回给服务器
+          that.setData({
+            ['_img_path']: fileURL // 更新data中的图片下载地址
+          });
+        }
       },
-      fail: function() {
+      fail: err =>{
+        console.error(`图片链接获取失败`, err);
         wx.showToast({
-          title: '复制失败',
-          icon: 'none',
-          duration: 2000
-        });
+          icon:'none',
+          title: '图片链接获取失败，请重试',
+          duration:2000
+        })
       }
     });
-  }
+  },
 })
 

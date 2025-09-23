@@ -57,7 +57,7 @@
             <view class="table__content__line__item">{{patternItem.probability}}</view>
             <view class="table__content__line__item final">
               <!-- 通过data-index传递当前索引 -->
-              <navigator bindtap="copyImagePath" data-index="{{index}}" hover-class="nav-hover">复制</navigator>
+              <navigator bindtap="openImagePreview" data-index="{{index}}" hover-class="nav-hover">预览</navigator>
             </view>
           </view>
         </view>

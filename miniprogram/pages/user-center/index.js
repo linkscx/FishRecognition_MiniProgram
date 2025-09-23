@@ -64,7 +64,7 @@ Page({
           })
         } else {
           //已经添加过了  将数据库的avatarUrl和nickName赋值给页面
-          this.getAvatarFileURL(res.data[0].avatarFileID);
+          this.getTempFileURL(res.data[0].avatarFileID);
           this.getAvatarUrl().then(path => {
             this.setData({
               avatarUrl: path,
@@ -110,8 +110,6 @@ Page({
 
     // 调用方法开始等待流程
     this.getAvatarUrl().then(path => {
-      avatarUrl = path;
-      console.log('最终的头像链接:', avatarUrl)
       //弹出了  就说明数据库没有用户的信息 将数据添加到数据库
       wx.cloud.database().collection('userInfo').add({
         data: {
@@ -164,7 +162,7 @@ Page({
         _this.setData({
           ['avatarFileId']: res.fileID, // 将每张图片的 fileID 保存到 data 中
         });
-        avatarUrl = _this.getAvatarFileURL(res.fileID);
+        avatarUrl = _this.getTempFileURL(res.fileID);
       },
       fail: err =>{
         console.error(`头像上传失败`, err);
@@ -176,8 +174,8 @@ Page({
       }
     });
   },
-  //获取上传到云存储的头像下载链接, 这个链接是临时的
-  getAvatarFileURL(fileID) {
+  //获取上传到云存储的图片下载链接, 这个链接是临时的
+  getTempFileURL(fileID) {
     let that = this;
     wx.cloud.getTempFileURL({
       fileList: [fileID], // 文件ID数组
@@ -189,14 +187,13 @@ Page({
           that.setData({
             ['_avatar_path']: fileURL // 更新data中的图片下载地址
           });
-          // console.log('头像下载地址', that.data._avatar_path);
         }
       },
       fail: err =>{
-        console.error(`头像链接获取失败`, err);
+        console.error(`图片链接获取失败`, err);
         wx.showToast({
           icon:'none',
-          title: '头像链接获取失败，请重试',
+          title: '图片链接获取失败，请重试',
           duration:2000
         })
       }

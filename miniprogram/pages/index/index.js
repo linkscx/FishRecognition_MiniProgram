@@ -64,14 +64,17 @@ Page({
     // 定义一个数组来存储所有的错误信息
     const errorMessages = [];
     // 检查每个值,并收集错误信息
-    if(formData.probability < 0 || formData.probability > 100){
+    if(parseFloat(formData.probability, 10) < 0 || parseFloat(formData.probability,10) > 100){
       errorMessages.push('置信度不在0到100的范围内');
+    }
+    if(parseInt(formData.type, 10) === 0){
+      errorMessages.push('非目标鱼类，仅目标鱼可保存!');
     }
     // 如果有错误信息，循环显示所有的错误信息
     // 如果有错误信息，显示模态对话框
     if (errorMessages.length > 0) {
       wx.showModal({
-        title: '输入错误',
+        title: '保存失败',
         content: errorMessages.join(',\t'), // 使用红色字体显示错误信息
         showCancel: false, // 不显示取消按钮
         confirmText: '确定',
@@ -132,8 +135,9 @@ Page({
     console.log('处理后的表单数据：', this.data);
     //有一种特殊情况 保存结果按钮点的太快了  图片上传云存储还没有结束 还没有返回fileId 这边就准备上传数据库了 这会导致一些值为null
     //所以说 需要先校验每个_image_path和fileId是否存在 如果存在则进行数据库的操作 
-    if(Array.isArray(this.data._image_path) && Array.isArray(this.data.fileId) && this.data._image_path.length > 0 && 
-      this.data.fileId.length > 0 &&  this.data._image_path.length === this.data.fileId.length) {
+    if(Array.isArray(this.data._image_path) && Array.isArray(this.data.fileId) 
+    && this.data._image_path.length > 0 && this.data.fileId.length > 0 
+    &&  this.data._image_path.length === this.data.fileId.length) {
       let _this = this //在数据库的操作中 this会改变指向
       //检查数据库 是否有这条记录  重复提交 则覆盖原有的数据
       wx.cloud.database().collection('patternInfo').where({
@@ -465,7 +469,7 @@ Page({
           if(res.data.success === true){
             //以下这段代码  写到 接受数据的函数里 
             _this.setData({
-              disabled_data: false,
+              disabled_data: true,
               //下面的 应该从后台拿到数据 赋值给前台
               type:res.data.form.type,
               shape:res.data.form.shape,
@@ -499,7 +503,8 @@ Page({
             }
 
             //接下来  已经接收到结果 并展示页面上了  判断是否开启了自动保存结果
-            if(app.globalData.isAutoSave){
+            //仅保存目标鱼
+            if(app.globalData.isAutoSave && _this.data.type !== 0){
               // 假设这是您的页面数据
               let formData = {
                 type: _this.data.type,
@@ -643,40 +648,41 @@ Page({
             // 开始检查
             checkServerUrl();
             
-            /* 假数据 测试用 */
-            that.setData({
-              disabled_data: false,
-              //下面的 应该从后台拿到数据 赋值给前台
-              type:0,
-              shape:0,
-              probability:95,
-              normal:null,
-              abnormal:null,
-            });      
-            if(that.data.type === 0){
+            if(!app.globalData.serverUrl){
+              /* 假数据 测试用 */
               that.setData({
-                isTarget:'',
-                notTarget:'checked',
-              })
-            }else if(that.data.type === 1){
-              that.setData({
-                isTarget:'checked',
-                notTarget:'',
-              })
-            }  
-            if(that.data.shape === 0){
-              that.setData({
-                normal:'checked',
-                abnormal:'',
-              })
-            }else if(that.data.shape === 1){ 
-              that.setData({
-                normal:'',
-                abnormal:'checked',
-              })
+                disabled_data: false,
+                //下面的 应该从后台拿到数据 赋值给前台
+                type:0,
+                shape:0,
+                probability:95,
+                normal:null,
+                abnormal:null,
+              });      
+              if(that.data.type === 0){
+                that.setData({
+                  isTarget:'',
+                  notTarget:'checked',
+                })
+              }else if(that.data.type === 1){
+                that.setData({
+                  isTarget:'checked',
+                  notTarget:'',
+                })
+              }  
+              if(that.data.shape === 0){
+                that.setData({
+                  normal:'checked',
+                  abnormal:'',
+                })
+              }else if(that.data.shape === 1){ 
+                that.setData({
+                  normal:'',
+                  abnormal:'checked',
+                })
+              }
+              /*            */
             }
-
-            /*            */
 
           }
         } else {
