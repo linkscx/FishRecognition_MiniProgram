@@ -34,6 +34,7 @@ Page({
     //_image_path:null,//图片的下载地址
     _image_path:[],
     shape:null, //0为正常，1为瘦身(不正常)
+    type:0, //0为是目标鱼，1为不是目标鱼
     probability:null,
   },
   //提交按钮  只用来调用getFormData
@@ -49,6 +50,7 @@ Page({
     } else {
       // 否则，从页面数据中获取
       formData = {
+        type: this.data.type,
         shape: this.data.shape,
         probability: this.data.probability,
       };
@@ -79,12 +81,24 @@ Page({
       });
     } else {
       // 如果没有错误信息，所有值都在范围内，更新data中的字段
-      if (formData.shape === '0') {
+      if (formData.type === 0) {
+        this.setData({
+          isTarget:'',
+          notTarget:'checked',
+        })
+      }else if(formData.type === 1){
+        this.setData({
+          isTarget:'checked',
+          notTarget:'',
+        })
+      }
+
+      if (formData.shape === 0) {
         this.setData({
           normal:'checked',
           abnormal:'',
         })
-      } else if (formData.shape ==='1') {
+      } else if (formData.shape === 1) {
         this.setData({
           normal:'',
           abnormal:'checked',
@@ -92,6 +106,7 @@ Page({
       }
       this.setData({
         isSave:true,
+        type:formData.type,
         shape:formData.shape,
         probability:formData.probability,
       });
@@ -105,10 +120,12 @@ Page({
     // 处理表单提交逻辑...  将表单的数据 传入到数据库内  数据库保存成功则返回提示信息
     const db = wx.cloud.database().collection('patternInfo');
     //存入数据库  之前要记得先把input标签获取的string数据转成int数据 再存入数据库
-    //预测体型 置信度
+    //是否为目标鱼 预测体型 置信度
+    const type = parseInt(this.data.type, 10);
     const shape = parseInt(this.data.shape, 10);
     const probability = parseFloat(this.data.probability, 10);
     this.setData({
+      type:type,
       shape:shape,
       probability:probability,
     })
@@ -130,6 +147,7 @@ Page({
                 data: {
                   _image_name:_this.data._image_name,
                   _image_path:_this.data._image_path,
+                  type:_this.data.type,
                   shape:_this.data.shape,
                   probability:_this.data.probability,
                   fileId:_this.data.fileId,
@@ -156,6 +174,7 @@ Page({
             // 如果已经存在了，则覆盖原有的
             db.doc(res.data[0]._id).update({
               data: {
+                type: _this.data.type,
                 shape: _this.data.shape,
                 probability: _this.data.probability,
               },
@@ -201,6 +220,7 @@ Page({
     const data = {
       _image_path:String(_this.data._image_path),
       _image_name:_this.data._image_name,
+      type: _this.data.type,
       shape: _this.data.shape,
       probability: String(_this.data.probability) + '%',
     };
@@ -314,6 +334,35 @@ Page({
       });
     }
   },
+
+  //如果修改表单的数据 就将isSave赋值为false  如果isSave为fasle就不让导出数据
+  changeType:function(e){
+    const type = e.detail.value;
+    // 根据选中的体型更新normal和abnormal的值
+    if (type == 0) {
+      // 如果选中的是“否”
+      this.setData({
+        type: 0,
+        isSave:false,
+        isTarget:'',
+        notTarget:'checked'
+      });
+    } else if (type == '1') {
+      // 如果选中的是“是”，
+      this.setData({
+        isLoading: true,
+      });
+      setTimeout(() => {
+        this.setData({
+          isLoading: false,
+          type: 1,
+          isSave:false,
+          isTarget:'checked',
+          notTarget:''
+        });
+      }, 1000);
+    }
+  },
   
   inputChange: function(e) {
     // 每当输入字段变化时，将 isSave 设置为 false
@@ -333,7 +382,7 @@ Page({
   actionSheetTap() {
     let _this = this
     wx.showActionSheet({
-      itemList: ['本地上传（可选多张）', '拍照上传'],
+      itemList: ['本地上传 [可选多张]', '拍照上传'],
       success(e) {
         if(e.tapIndex==0){
           _this.handleChooseImg('album')  
@@ -416,13 +465,27 @@ Page({
           if(res.data.success === true){
             //以下这段代码  写到 接受数据的函数里 
             _this.setData({
-              disabled_data: true,
+              disabled_data: false,
               //下面的 应该从后台拿到数据 赋值给前台
+              type:res.data.form.type,
               shape:res.data.form.shape,
               probability:res.data.form.probability,
               normal:null,
               abnormal:null,
-            });      
+              isTarget:null,
+              notTarget:null
+            });    
+            if(_this.data.type === 0){
+              _this.setData({
+                isTarget:'',
+                notTarget:'checked',
+              })
+            }else if(_this.data.type === 1){
+              _this.setData({
+                isTarget:'checked',
+                notTarget:'',
+              })
+            }  
             if(_this.data.shape === 0){
               _this.setData({
                 normal:'checked',
@@ -433,16 +496,13 @@ Page({
                 normal:'',
                 abnormal:'checked',
               })
-            }else{//如果app.globalData.isDefaultGender为null
-              _this.setData({
-                normal:null,
-                abnormal:null,
-              })
             }
+
             //接下来  已经接收到结果 并展示页面上了  判断是否开启了自动保存结果
             if(app.globalData.isAutoSave){
               // 假设这是您的页面数据
               let formData = {
+                type: _this.data.type,
                 shape: _this.data.shape,
                 probability: _this.data.probability,
               };
@@ -585,29 +645,37 @@ Page({
             
             /* 假数据 测试用 */
             that.setData({
-              disabled_data: true,
+              disabled_data: false,
               //下面的 应该从后台拿到数据 赋值给前台
+              type:0,
               shape:0,
               probability:95,
               normal:null,
               abnormal:null,
             });      
+            if(that.data.type === 0){
+              that.setData({
+                isTarget:'',
+                notTarget:'checked',
+              })
+            }else if(that.data.type === 1){
+              that.setData({
+                isTarget:'checked',
+                notTarget:'',
+              })
+            }  
             if(that.data.shape === 0){
               that.setData({
                 normal:'checked',
                 abnormal:'',
               })
-            }else if(that.data.gender === 1){ 
+            }else if(that.data.shape === 1){ 
               that.setData({
                 normal:'',
                 abnormal:'checked',
               })
-            }else{//如果app.globalData.isDefaultGender为null
-              that.setData({
-                normal:null,
-                abnormal:null,
-              })
             }
+
             /*            */
 
           }
@@ -661,6 +729,7 @@ Page({
       _image_name:null, 
       // _image_path: null,
       _image_path: [],
+      type:null,
       shape: null,
       probability: null,
     };
