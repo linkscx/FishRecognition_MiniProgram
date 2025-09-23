@@ -583,32 +583,32 @@ Page({
             // 开始检查
             checkServerUrl();
             
-            // /* 假数据 测试用 */
-            // that.setData({
-            //   disabled_data: false,
-            //   //下面的 应该从后台拿到数据 赋值给前台
-            //   shape:0,
-            //   probability:95,
-            //   normal:null,
-            //   abnormal:null,
-            // });      
-            // if(that.data.shape === 0){
-            //   that.setData({
-            //     normal:'checked',
-            //     abnormal:'',
-            //   })
-            // }else if(that.data.gender === 1){ 
-            //   that.setData({
-            //     normal:'',
-            //     abnormal:'checked',
-            //   })
-            // }else{//如果app.globalData.isDefaultGender为null
-            //   that.setData({
-            //     normal:null,
-            //     abnormal:null,
-            //   })
-            // }
-            // /*            */
+            /* 假数据 测试用 */
+            that.setData({
+              disabled_data: false,
+              //下面的 应该从后台拿到数据 赋值给前台
+              shape:0,
+              probability:95,
+              normal:null,
+              abnormal:null,
+            });      
+            if(that.data.shape === 0){
+              that.setData({
+                normal:'checked',
+                abnormal:'',
+              })
+            }else if(that.data.gender === 1){ 
+              that.setData({
+                normal:'',
+                abnormal:'checked',
+              })
+            }else{//如果app.globalData.isDefaultGender为null
+              that.setData({
+                normal:null,
+                abnormal:null,
+              })
+            }
+            /*            */
 
           }
         } else {
