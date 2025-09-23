@@ -333,7 +333,7 @@ Page({
   actionSheetTap() {
     let _this = this
     wx.showActionSheet({
-      itemList: ['本地上传', '拍照上传'],
+      itemList: ['本地上传（可选多张）', '拍照上传'],
       success(e) {
         if(e.tapIndex==0){
           _this.handleChooseImg('album')  
@@ -416,7 +416,7 @@ Page({
           if(res.data.success === true){
             //以下这段代码  写到 接受数据的函数里 
             _this.setData({
-              disabled_data: false,
+              disabled_data: true,
               //下面的 应该从后台拿到数据 赋值给前台
               shape:res.data.form.shape,
               probability:res.data.form.probability,
@@ -585,7 +585,7 @@ Page({
             
             /* 假数据 测试用 */
             that.setData({
-              disabled_data: false,
+              disabled_data: true,
               //下面的 应该从后台拿到数据 赋值给前台
               shape:0,
               probability:95,

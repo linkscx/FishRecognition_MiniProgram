@@ -87,7 +87,7 @@ page {
   font-size: 30rpx;
   line-height: 100rpx;
   font-weight: 500;
-  color: rgba(170, 170, 170, 1);
+  color: rgb(14, 1, 1);
   text-align: center;
 }
 .unit {
@@ -108,7 +108,6 @@ page {
   margin-left: 5%;
 }
 .ratio{
-  
   height: auto;
   font-size: 30rpx;
   line-height: 100rpx;
@@ -153,6 +152,12 @@ page {
   padding-right: 10%;
 }
 .item2{
+  padding-left: 20%;
+}
+.item3{
+  padding-right: 10%;
+}
+.item4{
   padding-left: 10%;
 }
 

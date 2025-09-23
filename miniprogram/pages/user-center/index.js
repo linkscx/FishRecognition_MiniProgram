@@ -64,17 +64,20 @@ Page({
           })
         } else {
           //已经添加过了  将数据库的avatarUrl和nickName赋值给页面
-          this.setData({
-            avatarUrl: res.data[0].avatarUrl,
-            nickName: res.data[0].nickName,
-            isLogin:false //不显示 一键登录按钮
-          })
-          // 系统初始化 只会执行一次app.js 也就是只会执行一次 一键登录
-          //当第一次一键登录后 再退出 此时app的globalData的值会被重置为null
-          // 也就是 再登陆时 需要找到数据库的值 重新赋值给globalData
-          app.globalData.isLogin = true//设置为登陆状态
-          app.globalData.nickName = res.data[0].nickName
-          app.globalData.avatarUrl = res.data[0].avatarUrl
+          this.getAvatarFileURL(res.data[0].avatarFileID);
+          this.getAvatarUrl().then(path => {
+            this.setData({
+              avatarUrl: path,
+              nickName: res.data[0].nickName,
+              isLogin:false //不显示 一键登录按钮
+            })
+            // 系统初始化 只会执行一次app.js 也就是只会执行一次 一键登录
+            //当第一次一键登录后 再退出 此时app的globalData的值会被重置为null
+            // 也就是 再登陆时 需要找到数据库的值 重新赋值给globalData
+            app.globalData.isLogin = true//设置为登陆状态
+            app.globalData.nickName = res.data[0].nickName
+            app.globalData.avatarUrl = path
+          });
         }
       }
     })
@@ -112,8 +115,8 @@ Page({
       //弹出了  就说明数据库没有用户的信息 将数据添加到数据库
       wx.cloud.database().collection('userInfo').add({
         data: {
-          avatarUrl: avatarUrl,
-          nickName: nickName
+          nickName: nickName,
+          avatarFileID: this.data.avatarFileId
         },
         success: res => {
           wx.showToast({
@@ -149,7 +152,7 @@ Page({
     // 等待异步函数返回结果，赋值给avatarUrl
     const avatarUrl = await this.waitForAvatarUrl();
     // 此时avatarUrl已确保有值，可以进行后续操作
-    console.log("获取到的头像路径：", avatarUrl);
+    // console.log("获取到的头像路径：", avatarUrl);
     return avatarUrl;
   },
   uploadAvatar(path){//上传头像
@@ -173,7 +176,7 @@ Page({
       }
     });
   },
-  //获取上传到云存储的头像下载链接
+  //获取上传到云存储的头像下载链接, 这个链接是临时的
   getAvatarFileURL(fileID) {
     let that = this;
     wx.cloud.getTempFileURL({

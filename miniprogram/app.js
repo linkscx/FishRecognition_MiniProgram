@@ -22,8 +22,6 @@ App({
           }
         })
         //console.log("成功调用getOpenId了")
-        // console.log(res)
-        // console.log(this.globalData.user_openid)
       },
       fail: err => {
         console.error("调用getOpenId失败：", err);
