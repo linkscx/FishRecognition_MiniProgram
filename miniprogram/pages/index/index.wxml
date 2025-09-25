@@ -24,8 +24,8 @@
               <text class="left shape">是否为目标鱼</text>
                 <view class="shape-box">
                     <radio-group name="type" bindchange="changeType">
-                        <radio disabled="{{disabled_data}}" class="radio-item" class="item1" value="1" checked="{{isTarget}}" color="#DBB975">是</radio>
-                        <radio disabled="{{disabled_data}}" class="radio-item" class="item2" value="0" checked="{{notTarget}}" color="#DBB975">否</radio>
+                        <radio disabled="{{disabled_data}}" class="radio-item item-yes item1" value="1" checked="{{isTarget}}">是</radio>
+                        <radio disabled="{{disabled_data}}" class="radio-item item-no item2" value="0" checked="{{notTarget}}">否</radio>
                     </radio-group>
                 </view>
             </view>
@@ -33,13 +33,13 @@
                 <text class="left shape">预测体型</text>
                 <view class="shape-box">
                     <radio-group name="shape" bindchange="changeShape">
-                        <radio disabled="true" class="radio-item" class="item3" value="0" checked="{{normal}}" color="#DBB975">正常</radio>
-                        <radio disabled="true" class="radio-item" class="item4" value="1" checked="{{abnormal}}" color="#DBB975">瘦身</radio>
+                        <radio disabled="true" class="radio-item item-yes item3" value="0" checked="{{normal}}">正常</radio>
+                        <radio disabled="true" class="radio-item item-no item4" value="1" checked="{{abnormal}}">瘦身</radio>
                     </radio-group>
                 </view>
             </view>
             <view class="{{type ? 'form-item' : 'form-item-hidden'}}">
-                <view class="left">置信度</view>
+                <view class="left shape">置信度</view>
                 <input disabled="true" class="right-input" placeholder="预测置信度" value="{{probability}}" name="probability" bindinput="inputChange" type="digit"/>
                 <view class="ratio">%</view>
             </view>

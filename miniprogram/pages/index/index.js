@@ -432,7 +432,7 @@ Page({
         if (res.data.length > 0) {
           // 获取第0条记录的url字段
           app.globalData.serverUrl = String(res.data[0].url);
-          console.log('获取到的服务器url:', app.globalData.serverUrl);
+          // console.log('获取到的服务器url:', app.globalData.serverUrl);
         } else {
           console.log('未找到关于服务器url的记录');
         }
@@ -451,9 +451,11 @@ Page({
     });
     const data = _this.data;
     const app = getApp()
+    const requestUrl = app.globalData.serverUrl.replace(/\/+$/, '') + '/pattern';
+    // console.log('request url:', requestUrl);
     wx.request({
       // url: '', // 替换为您的本地服务器地址和端口
-      url: app.globalData.serverUrl,
+      url: requestUrl,
       method: 'POST',
       data: {
         img_path: data._image_path,
@@ -469,7 +471,7 @@ Page({
           if(res.data.success === true){
             //以下这段代码  写到 接受数据的函数里 
             _this.setData({
-              disabled_data: true,
+              disabled_data: false,
               //下面的 应该从后台拿到数据 赋值给前台
               type:res.data.form.type,
               shape:res.data.form.shape,
@@ -648,41 +650,39 @@ Page({
             // 开始检查
             checkServerUrl();
             
-            if(!app.globalData.serverUrl){
-              /* 假数据 测试用 */
-              that.setData({
-                disabled_data: false,
-                //下面的 应该从后台拿到数据 赋值给前台
-                type:0,
-                shape:0,
-                probability:95,
-                normal:null,
-                abnormal:null,
-              });      
-              if(that.data.type === 0){
-                that.setData({
-                  isTarget:'',
-                  notTarget:'checked',
-                })
-              }else if(that.data.type === 1){
-                that.setData({
-                  isTarget:'checked',
-                  notTarget:'',
-                })
-              }  
-              if(that.data.shape === 0){
-                that.setData({
-                  normal:'checked',
-                  abnormal:'',
-                })
-              }else if(that.data.shape === 1){ 
-                that.setData({
-                  normal:'',
-                  abnormal:'checked',
-                })
-              }
-              /*            */
-            }
+            // /* 假数据 测试用 */
+            // that.setData({
+            //   disabled_data: false,
+            //   //下面的 应该从后台拿到数据 赋值给前台
+            //   type:0,
+            //   shape:0,
+            //   probability:95,
+            //   normal:null,
+            //   abnormal:null,
+            // });      
+            // if(that.data.type === 0){
+            //   that.setData({
+            //     isTarget:'',
+            //     notTarget:'checked',
+            //   })
+            // }else if(that.data.type === 1){
+            //   that.setData({
+            //     isTarget:'checked',
+            //     notTarget:'',
+            //   })
+            // }  
+            // if(that.data.shape === 0){
+            //   that.setData({
+            //     normal:'checked',
+            //     abnormal:'',
+            //   })
+            // }else if(that.data.shape === 1){ 
+            //   that.setData({
+            //     normal:'',
+            //     abnormal:'checked',
+            //   })
+            // }
+            // /*            */
 
           }
         } else {
