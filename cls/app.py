@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
-from predict import load_model, infer
+from predict import load_model_1, load_model_2, infer
 import requests
 import os
 import time
 
 application = Flask(__name__)
 # 启动时加载模型，且只执行一次
-cls_model = load_model()
+cls_model_1 = load_model_1()
+cls_model_2 = load_model_2()
 
 @application.route("/pattern", methods=['POST'])
 def pattern():
@@ -35,7 +36,7 @@ def pattern():
     # 记录开始时间
     start_time = time.time()
     # 这里调用 服务器分析代码
-    pred, prob = infer(cls_model, open_id)
+    pred1, pred2, prob = infer(cls_model_1, cls_model_2, open_id)
     # 记录结束时间
     end_time = time.time()
     # 计算执行时间
@@ -53,14 +54,15 @@ def pattern():
         print(f"Error deleting folder {folder_path}: {e}")
 
 
-    if pred is None or prob is None:
+    if pred1 is None or pred2 is None or prob is None:
         return jsonify({
             'success': False,
             'message': '识别失败，请检查输入或联系管理员。'
         })
     else:
         form = {
-            'shape': pred,
+            'type': pred1,
+            'shape': pred2,
             'probability': prob
         }
         return jsonify({
