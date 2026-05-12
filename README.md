@@ -59,7 +59,11 @@
 
 在微信开发者工具中分别上传并部署 `cloudfunctions/` 下各函数目录。
 
-> `create_patternExcel` / `create_excel` 使用 `node-xlsx`，部署前请确保已安装依赖。
+`create_patternExcel` / `create_excel` 使用 `node-xlsx`，可在对应函数目录执行：
+
+```bash
+npm install
+```
 
 ### 4. 后端接口约定
 
@@ -68,7 +72,16 @@
 - `POST {serverUrl}/pattern`
 - 请求体包含：`img_path`（图片临时 URL 数组）、`openid`
 
-后端需返回可被前端直接使用的识别结果字段（`type`、`shape`、`probability` 等）。
+后端建议返回 JSON（HTTP 200）：
+
+- 成功：`{ success: true, form: { type, shape, probability } }`
+- 失败：`{ success: false, message: "错误信息" }`
+
+说明：
+
+- `type`：目标鱼标记（前端据此决定是否允许保存）
+- `shape`：体型分类（如正常/瘦身）
+- `probability`：置信度（0~100）
 
 ## 数据说明
 
