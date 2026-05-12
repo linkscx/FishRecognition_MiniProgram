@@ -59,7 +59,7 @@
 
 在微信开发者工具中分别上传并部署 `cloudfunctions/` 下各函数目录。
 
-仅 `create_patternExcel` 与 `create_excel` 需要额外依赖（`node-xlsx`），可在这两个函数目录分别执行：
+仅 `create_patternExcel` 与 `create_excel` 需要额外依赖（`node-xlsx`）。这两个云函数目录各自维护独立 `package.json`，请分别进入目录执行：
 
 ```bash
 npm install
@@ -85,6 +85,7 @@ npm install
 
 ## 数据说明
 
+- 请求参数 `img_path` 对应数据库字段 `_image_path`（命名不同但语义一致）
 - `fileId`：云存储文件 ID（用于删除/追踪原图）
 - `_image_path`：云存储临时访问地址（用于识别请求）
 - `_image_name`：图片批次名称（时间戳格式，用于记录检索）
